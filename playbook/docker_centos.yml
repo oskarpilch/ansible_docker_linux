@@ -1,0 +1,8 @@
+---
+- hosts: centos_docker
+  become: yes
+  vars_files:
+    - ../inventory/group_vars/docker_centos/main.yml
+  
+  roles:
+  - ../roles/docker_centos
