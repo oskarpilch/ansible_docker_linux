@@ -1,0 +1,60 @@
+---
+  - name: Update apt packages
+    apt:
+      update_cache: "yes"
+      force_apt_get: "yes"
+	  cache_valid_time: 3600
+
+  - name: Install necessary packages for Docker
+    apt:
+      name: "{{ DOCKER_PACKAGES }}"
+      state: latest
+      force_apt_get: "yes"
+
+  - name: Add Docker GPG apt Key
+    apt_key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: latest
+
+  - name: Save the current Ubuntu release version into a variable
+    shell: lsb_release -cs
+    register: UBUNTU_VERSION
+
+  - name: Add Docker Repository
+    apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ UBUNTU_VERSION.stdout }} stable"
+      state: latest
+
+  - name: Update apt packages
+    apt:
+      update_cache: "yes"
+      force_apt_get: "yes"
+	  cache_valid_time: 3600
+
+  - name: Install Docker
+    apt:
+      name: "docker-ce"
+      state: latest
+      force_apt_get: "yes"
+
+  - name: Create docker group
+    group:
+      name: "docker"
+      state: latest
+
+  - name: Add user {{ SYSTEM_USER }} to docker group  
+    user:
+      name: "{{ SYSTEM_USER }}"
+      groups: "docker"
+      append: "yes"
+
+  - name: Install Docker Compose
+    get_url:
+      url: https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-Linux-x86_64
+      dest: "/usr/local/bin/docker-compose"
+      mode: 0755
+
+  - name: Reboot server
+    shell: "sleep 2 && reboot"
+    async: 5
+    poll: 0
