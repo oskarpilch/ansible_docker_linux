@@ -1,0 +1,41 @@
+---
+  - name: Install yum-utils
+    yum:
+      name: "yum-utils"
+      state: latest
+
+  - name: Add Docker repo
+    get_url:
+      url: https://download.docker.com/linux/centos/docker-ce.repo
+      dest: /etc/yum.repos.d/docker-ce.repo
+    become: yes
+
+  - name: Install Docker
+    yum:
+      name: "docker-ce"
+      state: latest
+
+  - name: Create docker group
+    group:
+      name: "docker"
+      state: latest
+	  become: yes
+
+  - name: Add user {{ SYSTEM_USER }} to docker group  
+    user:
+      name: "{{ SYSTEM_USER }}"
+      groups: "docker"
+      append: "yes"
+    become: yes
+
+  - name: Install Docker Compose
+    get_url:
+      url: https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-Linux-x86_64
+      dest: "/usr/local/bin/docker-compose"
+      mode: 0755
+	become: yes
+
+  - name: Reboot server
+    shell: "sleep 2 && reboot"
+    async: 5
+    poll: 0
