@@ -40,7 +40,7 @@
   - name: Create docker group
     group:
       name: "docker"
-      state: latest
+      state: present
 
   - name: Add user {{ SYSTEM_USER }} to docker group  
     user:
