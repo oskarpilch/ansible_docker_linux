@@ -14,7 +14,7 @@
   - name: Add Docker GPG apt Key
     apt_key:
       url: https://download.docker.com/linux/ubuntu/gpg
-      state: latest
+      state: present
 
   - name: Save the current Ubuntu release version into a variable
     shell: lsb_release -cs
@@ -23,7 +23,7 @@
   - name: Add Docker Repository
     apt_repository:
       repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ UBUNTU_VERSION.stdout }} stable"
-      state: latest
+      state: present
 
   - name: Update apt packages
     apt:
