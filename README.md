@@ -11,7 +11,7 @@ and go to the folder:
   
 Then, you can modify file inventory/hosts with your IP addresses.
   
-Once you're there you can run followning commands:
+Once it's OK you can run followning commands:
 
   1) Ubuntu:
   
