@@ -18,8 +18,8 @@
   - name: Create docker group
     group:
       name: "docker"
-      state: latest
-	  become: yes
+      state: present
+    become: yes
 
   - name: Add user {{ SYSTEM_USER }} to docker group  
     user:
@@ -33,7 +33,7 @@
       url: https://github.com/docker/compose/releases/download/{{ DOCKER_COMPOSE_VERSION }}/docker-compose-Linux-x86_64
       dest: "/usr/local/bin/docker-compose"
       mode: 0755
-	become: yes
+    become: yes
 
   - name: Reboot server
     shell: "sleep 2 && reboot"
