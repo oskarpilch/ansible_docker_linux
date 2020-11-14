@@ -14,6 +14,11 @@
     yum:
       name: "docker-ce"
       state: latest
+      
+  - name: Enable service docker
+    service:
+      name: docker
+      enabled: yes
 
   - name: Create docker group
     group:
